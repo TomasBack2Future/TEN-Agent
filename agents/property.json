@@ -4157,7 +4157,7 @@
                 ]
             },
             {
-                "name": "vision.openai.azure",
+                "name": "vision_openai_azure",
                 "auto_start": false,
                 "nodes": [
                     {
