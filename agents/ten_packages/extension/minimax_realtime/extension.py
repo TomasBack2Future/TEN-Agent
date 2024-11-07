@@ -9,6 +9,8 @@ import json
 import base64
 import uuid
 import aiofiles
+import samplerate
+import numpy as np
 
 from typing import Any
 import traceback
@@ -94,6 +96,8 @@ class MMRealtimeExtension(AsyncExtension):
             ten_env.log_warn(
                 f"GetProperty required {PROPERTY_TOKEN} failed, err: {err}")
 
+        self.resampler = samplerate.Resampler("sinc_best")
+
         self.ten_env = ten_env
         ten_env.on_start_done()
 
@@ -135,6 +139,7 @@ class MMRealtimeExtension(AsyncExtension):
 
         try:
             stream_id = audio_frame.get_property_int("stream_id")
+            in_sample_rate = audio_frame.get_sample_rate()
 
             if self.remote_stream_id == 0:
                 self.remote_stream_id = stream_id
@@ -143,7 +148,16 @@ class MMRealtimeExtension(AsyncExtension):
                 await self._start_conn()
                 ten_env.log_info(f"Start session for {stream_id}")
 
+
             frame_buf = audio_frame.get_buf()
+
+            if self.resampler:
+                if in_sample_rate != self.sample_rate:
+                    await self._dump_audio_if_need(frame_buf, "in_raw")
+                    frame_buf = resample_pcm_buffer(self.resampler,
+                        frame_buf, in_sample_rate, self.sample_rate
+                    )
+                    
             await self._dump_audio_if_need(frame_buf, "in")
             await self._send_audio(frame_buf)
         except Exception as e:
@@ -266,3 +280,14 @@ class MMRealtimeExtension(AsyncExtension):
 
         async with aiofiles.open(f"minimax_realtime_{suffix}.pcm", "ab") as f:
             await f.write(buf)
+
+
+def resample_pcm_buffer(resampler, input_buffer, input_samplerate, output_samplerate
+):
+    input_data = np.frombuffer(input_buffer, dtype=np.int16).astype(
+        np.float32
+    )
+    ratio = output_samplerate / input_samplerate
+    resampled_data = resampler.process(input_data, ratio)
+    output_buffer = resampled_data.astype(np.int16).tobytes()
+    return output_buffer
