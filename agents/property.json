@@ -4611,7 +4611,8 @@
                         "addon": "minimax_realtime",
                         "name": "minimax_realtime",
                         "property": {
-                            "token": "${env:MINIMAX_TOKEN}"
+                            "token": "${env:MINIMAX_TOKEN}",
+                            "prompt": ""
                         }
                     },
                     {

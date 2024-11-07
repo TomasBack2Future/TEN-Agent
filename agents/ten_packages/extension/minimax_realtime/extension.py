@@ -29,6 +29,7 @@ from ten import (
 
 PROPERTY_TOKEN = "token"  # Required
 PROPERTY_BASE_URI = "base_uri"  # Optional
+PROPERTY_PROMPT = "prompt"  # Optional
 
 EVENT_SESSION_UPDATE = "session.update"
 EVENT_SESSION_UPDATED = "session.updated"
@@ -95,6 +96,15 @@ class MMRealtimeExtension(AsyncExtension):
         except Exception as err:
             ten_env.log_warn(
                 f"GetProperty required {PROPERTY_TOKEN} failed, err: {err}")
+
+        try:
+            prompt = ten_env.get_property_string(PROPERTY_PROMPT)
+            if prompt:
+                self.prompt = prompt
+        except Exception as err:
+            ten_env.log_warn(
+                f"GetProperty required {PROPERTY_PROMPT} failed, err: {err}")
+
 
         self.resampler = samplerate.Resampler("sinc_best")
 
