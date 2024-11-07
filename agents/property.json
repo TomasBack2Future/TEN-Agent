@@ -4123,7 +4123,7 @@
                 ]
             },
             {
-                "name": "va_minimax_v2v",
+                "name": "va_minimax_v2v_http",
                 "auto_start": false,
                 "nodes": [
                     {
@@ -4577,7 +4577,7 @@
                 ]
             },
             {
-                "name": "va_minimax_realtime",
+                "name": "va_minimax_v2v",
                 "auto_start": false,
                 "nodes": [
                     {
