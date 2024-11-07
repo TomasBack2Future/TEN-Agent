@@ -18,6 +18,7 @@ RUN apt-get clean && apt-get update && apt-get install -y --no-install-recommend
     libunwind-dev \
     libc++1 \
     libssl-dev \
+    libsamplerate-dev \
     python3 \
     python3-venv \
     python3-pip \
