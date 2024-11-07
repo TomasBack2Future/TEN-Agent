@@ -400,6 +400,10 @@ func (s *HttpServer) processProperty(req *StartReq) (propertyJsonFile string, lo
 		slog.Error("graph_name is mandatory", "requestId", req.RequestId, logTag)
 		return
 	}
+	if graphName == "va.minimax.azure" {
+		graphName = "va_minimax_realtime"
+		slog.Info(fmt.Sprintf("handlerStart replace graph name to %s", graphName), "err", err, "requestId", req.RequestId, logTag)
+	}
 
 	// Generate token
 	req.Token = s.config.AppId
