@@ -8,6 +8,7 @@ import asyncio
 import json
 import base64
 import uuid
+import aiofiles
 
 from typing import Any
 import traceback
@@ -65,6 +66,8 @@ class MMRealtimeExtension(AsyncExtension):
     stopped = False
     sample_rate: int = 24000
     remote_stream_id: int = 0
+
+    dump: bool = True
 
     async def on_init(self, ten_env: AsyncTenEnv) -> None:
         ten_env.log_debug("on_init")
@@ -141,6 +144,7 @@ class MMRealtimeExtension(AsyncExtension):
                 ten_env.log_info(f"Start session for {stream_id}")
 
             frame_buf = audio_frame.get_buf()
+            await self._dump_audio_if_need(frame_buf, "in")
             await self._send_audio(frame_buf)
         except Exception as e:
             ten_env.log_error(f"on audio frame failed {e} {traceback.format_exc()}")
@@ -216,6 +220,8 @@ class MMRealtimeExtension(AsyncExtension):
         self.websocket = None
 
     async def _on_audio_recv(self, audio_data):
+        await self._dump_audio_if_need(audio_data, "out")
+
         f = AudioFrame.create("pcm_frame")
         f.set_sample_rate(self.sample_rate)
         f.set_bytes_per_sample(2)
@@ -253,3 +259,10 @@ class MMRealtimeExtension(AsyncExtension):
             if event.get("type") != EVENT_INPUT_AUDIO_BUFFER_APPEND:
                 self.ten_env.log_info(f"outgoing message {event}")
             await self.websocket.send(json.dumps(event))
+
+    async def _dump_audio_if_need(self, buf: bytearray, suffix: str) -> None:
+        if not self.dump:
+            return
+
+        async with aiofiles.open(f"minimax_realtime_{suffix}.pcm", "ab") as f:
+            await f.write(buf)
