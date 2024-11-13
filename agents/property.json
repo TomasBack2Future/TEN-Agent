@@ -4294,13 +4294,19 @@
               "subscribe_video": true,
               "publish_audio": true,
               "publish_data": true,
-              "enable_agora_asr": true,
-              "agora_asr_vendor_name": "microsoft",
-              "agora_asr_language": "en-US",
-              "agora_asr_vendor_key": "${env:AZURE_STT_KEY}",
-              "agora_asr_vendor_region": "${env:AZURE_STT_REGION}",
-              "agora_asr_session_control_file_path": "session_control.conf",
               "subscribe_video_pix_fmt": 4
+            }
+          },
+          {
+            "type": "extension",
+            "extension_group": "asr",
+            "addon": "deepgram_asr_python",
+            "name": "deepgram_asr",
+            "property": {
+              "api_key": "${env:DEEPGRAM_API_KEY}",
+              "language": "en-US",
+              "model": "nova-2",
+              "sample_rate": "16000"
             }
           },
           {
@@ -4346,21 +4352,13 @@
           {
             "extension_group": "default",
             "extension": "agora_rtc",
-            "data": [
+            "audio_frame": [
               {
-                "name": "text_data",
+                "name": "pcm_frame",
                 "dest": [
                   {
-                    "extension_group": "default",
-                    "extension": "interrupt_detector"
-                  },
-                  {
-                    "extension_group": "llm",
-                    "extension": "vision_python_async"
-                  },
-                  {
-                    "extension_group": "transcriber",
-                    "extension": "message_collector"
+                    "extension_group": "asr",
+                    "extension": "deepgram_asr"
                   }
                 ]
               }
@@ -4392,6 +4390,29 @@
                   {
                     "extension_group": "llm",
                     "extension": "vision_python_async"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "extension_group": "asr",
+            "extension": "deepgram_asr",
+            "data": [
+              {
+                "name": "text_data",
+                "dest": [
+                  {
+                    "extension_group": "default",
+                    "extension": "interrupt_detector"
+                  },
+                  {
+                    "extension_group": "llm",
+                    "extension": "vision_python_async"
+                  },
+                  {
+                    "extension_group": "transcriber",
+                    "extension": "message_collector"
                   }
                 ]
               }

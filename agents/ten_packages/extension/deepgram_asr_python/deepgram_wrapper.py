@@ -89,8 +89,7 @@ class AsyncDeepgramWrapper():
     async def send_frame(self) -> None:
         while not self.stopped:
             try:
-                pcm_frame = await asyncio.wait_for(self.queue.get(), timeout=10.0)
-
+                pcm_frame = await self.queue.get()
                 if pcm_frame is None:
                     logger.warning("send_frame: exit due to None value got.")
                     return
@@ -103,8 +102,6 @@ class AsyncDeepgramWrapper():
                 self.stream_id = pcm_frame.get_property_int('stream_id')
                 await self.deepgram_client.send(frame_buf)
                 self.queue.task_done()
-            except asyncio.TimeoutError as e:
-                logger.exception(f"error in send_frame: {e}")
             except IOError as e:
                 logger.exception(f"error in send_frame: {e}")
             except Exception as e:
