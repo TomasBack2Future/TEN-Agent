@@ -329,7 +329,7 @@ export function CozeSettingsTab(props: {
                 form.reset({
                   token: "",
                   bot_id: "",
-                  base_url: ECozeBaseUrl.GLOBAL,
+                  base_url: ECozeBaseUrl.CN,
                 })
                 dispatch(resetCozeSettings())
                 toast.success("Coze settings reset")
