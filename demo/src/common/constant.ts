@@ -24,14 +24,14 @@ export const DEFAULT_AGENT_SETTINGS = {
 }
 
 export enum ECozeBaseUrl {
-  // CN = "https://api.coze.cn",
-  GLOBAL = "https://api.coze.com",
+  CN = "https://api.coze.cn",
+  // GLOBAL = "https://api.coze.com",
 }
 
 export const DEFAULT_COZE_SETTINGS: ICozeSettings = {
   token: "",
   bot_id: "",
-  base_url: ECozeBaseUrl.GLOBAL,
+  base_url: ECozeBaseUrl.CN,
 }
 
 export const DESCRIPTION =
@@ -55,6 +55,7 @@ export const LANGUAGE_OPTIONS: LanguageOptionItem[] = [
   },
 ]
 export const GRAPH_OPTIONS: GraphOptionItem[] = [
+  /*
   {
     label: "Voice Agent - OpenAI LLM + Azure TTS",
     value: "va_openai_azure",
@@ -82,7 +83,11 @@ export const GRAPH_OPTIONS: GraphOptionItem[] = [
   {
     label: "Voice Agent Coze Bot + Azure TTS",
     value: "va_coze_azure",
-  },
+  },*/
+  {
+    label: "Voice Agent Coze Bot + Minimax TTS",
+    value: "va_coze_minimax",
+  }
 ]
 
 export const isRagGraph = (graphName: string) => {

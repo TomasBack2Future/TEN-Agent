@@ -17,6 +17,10 @@ export const voiceNameMap: LanguageMap = {
         openai: {
             male: "ash",
             female: "shimmer"
+        },
+        minimax: {
+            male: "male-qn-daxuesheng-jingpin",
+            female: "female-shaonv"
         }
     },
     "en-US": {
@@ -35,6 +39,10 @@ export const voiceNameMap: LanguageMap = {
         openai: {
             male: "ash",
             female: "shimmer"
+        },
+        minimax: {
+            male: "male-qn-daxuesheng-jingpin",
+            female: "female-shaonv"
         }
     },
     "ja-JP": {
@@ -45,6 +53,10 @@ export const voiceNameMap: LanguageMap = {
         openai: {
             male: "ash",
             female: "shimmer"
+        },
+        minimax: {
+            male: "male-qn-daxuesheng-jingpin",
+            female: "female-shaonv"
         }
     },
     "ko-KR": {
@@ -55,6 +67,10 @@ export const voiceNameMap: LanguageMap = {
         openai: {
             male: "ash",
             female: "shimmer"
+        },
+        minimax: {
+            male: "male-qn-daxuesheng-jingpin",
+            female: "female-shaonv"
         }
     },
 };
@@ -180,6 +196,20 @@ export const getGraphProperties = (
             },
             "azure_tts": {
                 "azure_synthesis_voice_name": voiceNameMap[language]["azure"][voiceType]
+            }
+        }
+    } else if (graphName == "va_coze_minimax") {
+        return {
+            "agora_rtc": {
+                "agora_asr_language": language,
+            },
+            "coze_python_async": {
+                ...localizationOptions,
+                "prompt": prompt,
+                "greeting": greeting,
+            },
+            "minimax_tts": {
+                "voice_id": voiceNameMap[language]["minimax"][voiceType]
             }
         }
     }

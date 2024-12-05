@@ -49,7 +49,7 @@ const getInitialState = (): InitialState => {
     language: "en-US",
     voiceType: "male",
     chatItems: [],
-    graphName: "va_openai_v2v",
+    graphName: "va_coze_minimax",
     agentSettings: DEFAULT_AGENT_SETTINGS,
     cozeSettings: DEFAULT_COZE_SETTINGS,
     mobileActiveTab: EMobileActiveTab.AGENT,
