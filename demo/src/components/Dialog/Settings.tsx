@@ -231,7 +231,7 @@ export const cozeSettingsFormSchema = z.object({
       message: "Bot ID is required",
     })
     .min(1),
-  base_url: z.nativeEnum(ECozeBaseUrl).default(ECozeBaseUrl.GLOBAL),
+  base_url: z.nativeEnum(ECozeBaseUrl).default(ECozeBaseUrl.CN),
 })
 
 export const isCozeGraph = (graphName: string) => {
@@ -305,8 +305,8 @@ export function CozeSettingsTab(props: {
                     <SelectValue placeholder="Select base URL" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value={ECozeBaseUrl.GLOBAL}>
-                      {ECozeBaseUrl.GLOBAL}
+                    <SelectItem value={ECozeBaseUrl.CN}>
+                      {ECozeBaseUrl.CN}
                     </SelectItem>
                     {/* <SelectItem value={ECozeBaseUrl.CN}>
                       {ECozeBaseUrl.CN}

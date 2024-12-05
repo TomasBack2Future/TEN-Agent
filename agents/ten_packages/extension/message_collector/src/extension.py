@@ -185,6 +185,9 @@ class MessageCollectorExtension(Extension):
             f"on_data {TEXT_DATA_TEXT_FIELD}: {text} {TEXT_DATA_FINAL_FIELD}: {final} {TEXT_DATA_STREAM_ID_FIELD}: {stream_id} {TEXT_DATA_END_OF_SEGMENT_FIELD}: {end_of_segment}"
         )
 
+        if stream_id != 0:
+            end_of_segment = final
+
         # We cache all final text data and append the non-final text data to the cached data
         # until the end of the segment.
         if end_of_segment:
